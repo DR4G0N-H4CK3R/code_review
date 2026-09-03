@@ -1,0 +1,12 @@
+# Core pipeline: graphs, model, scoring, federated simulation.
+numpy>=1.24
+
+# Figures produced by experiments/run_federated.py and run_attacks.py
+matplotlib>=3.6
+
+# Only needed for the real gRPC federation (flower_server.py / flower_client.py)
+# flwr>=1.7
+
+# Only needed for --backend torch (fedgnn/model_torch.py)
+# torch>=2.0
+# torch-geometric>=2.4
