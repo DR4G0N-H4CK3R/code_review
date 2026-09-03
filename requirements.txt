@@ -1,0 +1,3 @@
+# The guardrail, the simulator and the attack harness need nothing but the
+# standard library. matplotlib is used only by experiments/run_sweep.py.
+matplotlib>=3.6
