@@ -1,0 +1,65 @@
+==============================================================================
+1. LOADING FLOWS  (source=synthetic)
+==============================================================================
+   2048 flow records, 28 labelled malicious (1.37%)
+   time span 2399 s, 24 distinct devices
+
+==============================================================================
+2. GRAPH CONSTRUCTION  (window = 60 s)
+==============================================================================
+   40 graph snapshots
+   nodes/window : min 21  max 24  mean 23.9
+   edges/window : min 25  max 41  mean 31.7
+   node features (8): log_deg_in, log_deg_out, log_bytes_in, log_bytes_out, peer_ratio, proto_entropy, port_entropy, external_egress_ratio
+   edge features (8): log_bytes, log_pkts, log_duration, dport_rarity, is_tcp, peer_novelty, flow_count, time_of_day
+   split: 20 training windows / 20 test windows
+   malicious edges in test: 25
+
+==============================================================================
+3. TRAINING  (2-layer GCN autoencoder, 8 -> 16 -> 2)
+==============================================================================
+   trainable parameters: 242
+   epoch   1  loss = 15.3701
+   epoch   6  loss = 3.0395
+   epoch  11  loss = 2.0950
+   epoch  16  loss = 1.8957
+   epoch  21  loss = 1.7644
+   epoch  26  loss = 1.7016
+   epoch  30  loss = 1.5933
+
+==============================================================================
+4. DETECTION
+==============================================================================
+   edges scored        : 663
+   malicious edges     : 25
+   ROC-AUC             : 0.926
+   precision@10        : 0.900
+   recall@10           : 0.360
+
+   per-component AUC:
+     structural      0.359
+     node feature    0.971
+     edge feature    0.740
+     peer novelty    0.680
+
+==============================================================================
+5. TOP ALERTS WITH ATTRIBUTION
+==============================================================================
+   w20  [false positive] s0_laptop_1 -> s0_gateway_16  score=0.746  driver: endpoint behaviour change (1.00)
+   w20  [false positive] s0_laptop_8 -> s0_gateway_6  score=0.532  driver: unusual traffic profile for this pair (0.96)
+   w21  [false positive] s0_thermostat_14 -> s0_gateway_16  score=0.748  driver: endpoint behaviour change (0.97)
+   w21  [false positive] s0_camera_15 -> s0_nvr_21  score=0.709  driver: unusual traffic profile for this pair (1.00)
+   w22  [false positive] s0_thermostat_17 -> s0_gateway_6  score=0.713  driver: endpoint behaviour change (1.00)
+   w22  [false positive] s0_laptop_12 -> s0_gateway_6  score=0.703  driver: endpoint behaviour change (0.97)
+   w23  [false positive] s0_laptop_8 -> s0_gateway_6  score=0.712  driver: unusual traffic profile for this pair (1.00)
+   w23  [false positive] s0_thermostat_4 -> s0_gateway_6  score=0.708  driver: endpoint behaviour change (0.95)
+   w24  [TRUE POSITIVE ] s0_camera_15 -> s0_laptop_8  score=0.913  driver: never-seen peer (1.00)
+   w24  [TRUE POSITIVE ] s0_camera_15 -> s0_laptop_19  score=0.856  driver: endpoint behaviour change (1.00)
+   w25  [TRUE POSITIVE ] s0_camera_15 -> s0_laptop_8  score=0.727  driver: endpoint behaviour change (1.00)
+   w25  [false positive] s0_thermostat_4 -> s0_gateway_16  score=0.689  driver: endpoint behaviour change (0.95)
+
+==============================================================================
+6. TEMPORAL CONSENSUS  (2 of the last 3 windows above 0.7)
+==============================================================================
+   confirmed incident at window 25: s0_camera_15 -> s0_laptop_8
+   confirmed incident at window 39: s0_camera_15 -> s0_thermostat_10

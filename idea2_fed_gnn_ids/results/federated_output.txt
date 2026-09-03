@@ -1,0 +1,78 @@
+====================================================================================
+BUILDING 6 FEDERATED SITES  (source=synthetic)
+====================================================================================
+  home-a-0     train windows  20  test windows  20  test edges   546  malicious  17
+  office-b-1   train windows  20  test windows  21  test edges   848  malicious  17
+  campus-c-2   train windows  20  test windows  21  test edges   664  malicious  23
+  clinic-d-3   train windows  20  test windows  21  test edges   585  malicious  20
+  retail-e-4   train windows  20  test windows  21  test edges   597  malicious  20
+  flat-f-5     train windows  20  test windows  20  test edges   518  malicious  21
+  model: 242 parameters (0.9 KB per update)
+
+====================================================================================
+BASELINE A - local only (each site trains alone, never shares)
+====================================================================================
+  home-a-0     AUC 0.981   p@10 0.70
+  office-b-1   AUC 0.830   p@10 0.40
+  campus-c-2   AUC 0.811   p@10 0.60
+  clinic-d-3   AUC 0.996   p@10 1.00
+  retail-e-4   AUC 0.733   p@10 0.30
+  flat-f-5     AUC 0.746   p@10 0.50
+
+====================================================================================
+BASELINE B - centralised (all raw graphs pooled: what privacy forbids)
+====================================================================================
+  home-a-0     AUC 0.824   p@10 0.50
+  office-b-1   AUC 0.802   p@10 0.20
+  campus-c-2   AUC 0.827   p@10 0.60
+  clinic-d-3   AUC 0.895   p@10 0.80
+  retail-e-4   AUC 0.862   p@10 0.70
+  flat-f-5     AUC 0.873   p@10 0.70
+
+====================================================================================
+FEDERATED - FedAvg, 15 rounds x 3 local epochs
+====================================================================================
+  round  1  loss= 5.2100  global AUC=0.601  rejected=0
+  round  2  loss= 4.1960  global AUC=0.684  rejected=0
+  round  3  loss= 3.6308  global AUC=0.768  rejected=0
+  round  4  loss= 3.1350  global AUC=0.820  rejected=0
+  round  5  loss= 2.7370  global AUC=0.820  rejected=0
+  round  6  loss= 2.4482  global AUC=0.802  rejected=0
+  round  7  loss= 2.2213  global AUC=0.814  rejected=0
+  round  8  loss= 2.0688  global AUC=0.834  rejected=0
+  round  9  loss= 1.9663  global AUC=0.840  rejected=0
+  round 10  loss= 1.8554  global AUC=0.839  rejected=0
+  round 11  loss= 1.7891  global AUC=0.843  rejected=0
+  round 12  loss= 1.7464  global AUC=0.834  rejected=0
+  round 13  loss= 1.7003  global AUC=0.829  rejected=0
+  round 14  loss= 1.6741  global AUC=0.834  rejected=0
+  round 15  loss= 1.6459  global AUC=0.829  rejected=0
+
+====================================================================================
+FEDERATED + LOCAL FINE-TUNE (personalisation, no extra communication)
+====================================================================================
+
+--------------------------------------------------------------------------------------------
+site          local only   federated  fed+finetune  centralised          best
+--------------------------------------------------------------------------------------------
+home-a-0           0.981       0.737         0.986        0.824        fed+ft
+office-b-1         0.830       0.837         0.828        0.802     federated
+campus-c-2         0.811       0.849         0.812        0.827     federated
+clinic-d-3         0.996       0.830         0.998        0.895        fed+ft
+retail-e-4         0.733       0.867         0.838        0.862     federated
+flat-f-5           0.746       0.856         0.928        0.873        fed+ft
+--------------------------------------------------------------------------------------------
+MEAN               0.850       0.829         0.898        0.847
+non-IID spread (max - min per-site AUC):  local 0.263   federated 0.130   fed+finetune 0.186
+
+====================================================================================
+PRIVACY COST - clip to 1.0, then add Gaussian noise to every update
+====================================================================================
+  noise multiplier 0.0    mean AUC 0.829  (min 0.737, max 0.867)
+  noise multiplier 0.01   mean AUC 0.823  (min 0.727, max 0.865)
+  noise multiplier 0.05   mean AUC 0.804  (min 0.697, max 0.843)
+  noise multiplier 0.1    mean AUC 0.757  (min 0.621, max 0.831)
+  noise multiplier 0.25   mean AUC 0.625  (min 0.466, max 0.815)
+
+figures written to /home/claude/idea2_fed_gnn_ids/results
+total wall time 19.5 s

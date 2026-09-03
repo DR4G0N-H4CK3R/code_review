@@ -1,0 +1,19 @@
+PASS  test_adjacency_is_symmetric_and_normalised
+PASS  test_clip_bounds_the_norm
+PASS  test_detection_beats_chance
+PASS  test_features_are_finite
+PASS  test_federated_loop_runs_and_learns
+PASS  test_gradients_match_finite_differences
+PASS  test_graph_shapes
+PASS  test_model_is_lightweight
+PASS  test_no_future_leakage_in_novelty
+PASS  test_robust_rules_resist_one_outlier
+PASS  test_roc_auc_matches_known_values
+PASS  test_scores_in_range
+PASS  test_sites_are_non_iid
+PASS  test_temporal_consensus_needs_repetition
+PASS  test_training_reduces_loss
+PASS  test_validation_rejects_garbage
+PASS  test_weight_roundtrip
+
+17/17 passed

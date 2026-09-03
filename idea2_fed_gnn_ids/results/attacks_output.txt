@@ -1,0 +1,51 @@
+========================================================================================
+T4/T5 MALICIOUS CLIENT UPDATES - sign_flip   (mean AUC on honest sites)
+========================================================================================
+malicious sites             fedavg          median    trimmed_mean            krum
+----------------------------------------------------------------------------------
+0                            0.834           0.824           0.839           0.881
+1                            0.393           0.771           0.772           0.733
+2                            0.442           0.761           0.761           0.761
+3                            0.335           0.418           0.418           0.418
+
+with norm validation          fedavg          median    trimmed_mean            krum
+----------------------------------------------------------------------------------
+0                            0.834           0.824           0.839           0.881
+1                            0.822           0.793           0.815           0.735
+2                            0.830           0.828           0.828           0.828
+3                            0.849           0.838           0.838           0.838
+
+========================================================================================
+T4/T5 MALICIOUS CLIENT UPDATES - scale   (mean AUC on honest sites)
+========================================================================================
+malicious sites             fedavg          median    trimmed_mean            krum
+----------------------------------------------------------------------------------
+0                            0.834           0.824           0.839           0.881
+1                            0.781           0.826           0.833           0.733
+2                            0.444           0.839           0.839           0.839
+3                            0.217           0.489           0.489           0.489
+
+with norm validation          fedavg          median    trimmed_mean            krum
+----------------------------------------------------------------------------------
+0                            0.834           0.824           0.839           0.881
+1                            0.822           0.793           0.815           0.735
+2                            0.830           0.828           0.828           0.828
+3                            0.849           0.838           0.838           0.838
+
+========================================================================================
+T2 STRUCTURAL GRAPH POISONING (targeted)
+   The update is well-formed, so no aggregation rule can see it - but in
+   this configuration it also does not measurably hurt. Two structural
+   reasons, both worth stating rather than hiding: the model has ~240
+   parameters and cannot memorise one site's injected pattern, and the
+   peer-novelty term is computed locally from each site's own history,
+   never learned, so poisoning another site's graphs cannot reach it.
+========================================================================================
+poisoned sites              fedavg          median    trimmed_mean            krum
+----------------------------------------------------------------------------------
+0                            0.834           0.824           0.839           0.881
+1                            0.852           0.826           0.846           0.737
+2                            0.842           0.830           0.830           0.830
+3                            0.831           0.829           0.829           0.829
+
+wrote /home/claude/idea2_fed_gnn_ids/results/attack_results.csv
